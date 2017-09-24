@@ -8,7 +8,6 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -64,6 +63,7 @@ public class CircularCountdownView extends View {
             progressWidth = a.getDimensionPixelSize(R.styleable.CircularCountdownView_progressWidth, getResources().getDimensionPixelSize(R.dimen.default_progress_width));
             progressColor = a.getColor(R.styleable.CircularCountdownView_progressColor, ContextCompat.getColor(context, R.color.default_progress_color));
             progressStrokeWidth = a.getDimensionPixelSize(R.styleable.CircularCountdownView_strokeWidth, getResources().getDimensionPixelSize(R.dimen.default_progress_stroke_width));
+            progressStrokeWidth += progressWidth;
             progressStrokeColor = a.getColor(R.styleable.CircularCountdownView_strokeColor, ContextCompat.getColor(context, R.color.default_stroke_color));
             progressBackgroundColor = a.getColor(R.styleable.CircularCountdownView_backgroundColor, ContextCompat.getColor(context, R.color.default_background_color));
             progressEdgeType = a.getInt(R.styleable.CircularCountdownView_progressEdge, getResources().getInteger(R.integer.default_progress_edge));
@@ -161,7 +161,6 @@ public class CircularCountdownView extends View {
                 centerHeight + radius
         );
 
-
         setupPaintAttributes(progressPaint, progressWidth, progressColor);
         setupPaintAttributes(progressStroke, progressStrokeWidth, progressStrokeColor);
         setupPaintAttributes(progressBackground, progressWidth, progressBackgroundColor);
@@ -172,7 +171,7 @@ public class CircularCountdownView extends View {
         // Draw progressPaint background
         canvas.drawCircle(centerWidth, centerHeight, radius, progressBackground);
 
-        // Draw progressPaint from top (-90ยบ)
+        // Draw progressPaint from top (-90º)
         canvas.drawArc(circleBounds, -90, (float) (progress * 360), false, progressPaint);
     }
 
