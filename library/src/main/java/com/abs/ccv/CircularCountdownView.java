@@ -200,7 +200,17 @@ public class CircularCountdownView extends View {
         this.initialProgress = initialProgress;
     }
 
-    public long getProgressMillisecond() {
-        return progressMillisecond;
+    public long getTimeRemaining() {
+        return duration - progressMillisecond;
     }
+
+    // TODO: Add new features
+    /*public void startCountdown() {
+        startTime = System.currentTimeMillis();
+        viewHandler.post(updateView);
+    }
+
+    public void pauseCountdown() {
+        viewHandler.removeCallbacks(updateView);
+    }*/
 }

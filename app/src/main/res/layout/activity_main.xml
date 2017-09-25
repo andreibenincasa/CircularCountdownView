@@ -4,8 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.abs.ccv.CircularCountdownView
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:text="A basic and customizable circular countdown view for Android."
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <com.abs.ccv.CircularCountdownView
+        android:id="@+id/ccv"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
         android:layout_gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:text="A 30s setup with 15s of initial progress, so this one will begin from the middle in the first turn."
+        android:textSize="18sp" />
 </LinearLayout>
