@@ -7,8 +7,15 @@ android {
         applicationId "com.abs.ccv.example"
         minSdkVersion 15
         targetSdkVersion 25
+
         versionCode 1
         versionName "1.0"
+
+        dexOptions {
+            preDexLibraries = false
+            jumboMode = false
+            javaMaxHeapSize "2048m"
+        }
     }
     buildTypes {
         release {

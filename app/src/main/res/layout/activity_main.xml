@@ -24,6 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:gravity="center"
-        android:text="A 30s setup with 15s of initial progress, so this one will begin from the middle in the first turn."
+        android:text="A 30s setup with 15s of initial progress. Since the onCountdownFinished remove the initial progress, this one will begin from the middle just in the first turn."
         android:textSize="18sp" />
 </LinearLayout>

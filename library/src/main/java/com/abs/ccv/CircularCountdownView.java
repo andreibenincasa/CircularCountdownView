@@ -15,7 +15,7 @@ import android.view.View;
  * Created by Andrei Benincasa on 23/09/2017.
  */
 
-public class CircularCountdownView extends View {
+public class CircularCountdownView extends View implements CircularCountdownViewListener {
 
     private Paint progressPaint;
     private float progressWidth;
@@ -35,12 +35,14 @@ public class CircularCountdownView extends View {
     private RectF circleBounds;
     private double progress;
 
-    Handler viewHandler;
-    Runnable updateView;
+    private CircularCountdownViewListener listener;
+
+    private Handler viewHandler;
+    private Runnable updateView;
     private long startTime;
     private long currentTime;
     private long duration;
-    private long progressMillisecond;
+    private long elapsed;
     private long initialProgress;
 
     public CircularCountdownView(Context context) {
@@ -82,17 +84,25 @@ public class CircularCountdownView extends View {
         startTime = System.currentTimeMillis();
         currentTime = startTime;
         duration = getResources().getInteger(R.integer.default_duration);
-        duration -= initialProgress;
+
+        if (listener == null) {
+            listener = this;
+        }
 
         viewHandler = new Handler();
         updateView = new Runnable() {
             @Override
             public void run() {
                 currentTime = System.currentTimeMillis();
-                progressMillisecond = (initialProgress + currentTime - startTime) % duration;
-                progress = (double) progressMillisecond / duration;
-
+                elapsed = currentTime - startTime + initialProgress;
+                progress = (double) elapsed / duration;
                 invalidate();
+
+                if (elapsed >= duration) {
+                    startTime = System.currentTimeMillis();
+                    listener.onCountdownFinished();
+                }
+
                 viewHandler.postDelayed(updateView, 1000 / 60);
             }
         };
@@ -192,8 +202,16 @@ public class CircularCountdownView extends View {
         paint.setColor(color);
     }
 
+    public long getDuration() {
+        return duration;
+    }
+
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public long getInitialProgress() {
+        return initialProgress;
     }
 
     public void setInitialProgress(long initialProgress) {
@@ -201,7 +219,20 @@ public class CircularCountdownView extends View {
     }
 
     public long getTimeRemaining() {
-        return duration - progressMillisecond;
+        return duration - elapsed;
+    }
+
+    public CircularCountdownViewListener getListener() {
+        return listener;
+    }
+
+    public void setListener(CircularCountdownViewListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onCountdownFinished() {
+
     }
 
     // TODO: Add new features
