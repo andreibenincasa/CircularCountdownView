@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="default_progress_color">#007ABC</color>
+    <color name="default_stroke_color">#DDDDDD</color>
+    <color name="default_background_color">#CCCCCC</color>
+</resources>
