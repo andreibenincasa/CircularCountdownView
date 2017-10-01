@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:gravity="center"
-        android:text="A basic and customizable circular countdown view for Android."
+        android:text="A basic, scalable and customizable circular countdown view for Android."
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -20,17 +20,19 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
-        ccv:progressWidth="12dp"
-        ccv:strokeWidth="12dp"
         ccv:backgroundColor="@color/colorPrimaryDark"
+        ccv:duration="5000"
+        ccv:initialElapsedTime="2000"
         ccv:progressColor="@color/colorAccent"
-        ccv:strokeColor="@color/colorPrimary" />
+        ccv:progressWidth="12dp"
+        ccv:strokeColor="@color/colorPrimary"
+        ccv:strokeWidth="12dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:gravity="center"
-        android:text="A 30s setup with 15s of initial progress. Since the onCountdownFinished remove the initial progress, this one will begin from the middle just in the first turn."
+        android:text="A 10s setup with 5s of elapsed time. Since the onCountdownFinished remove the elapsed time, this one will begin from the middle just in the first turn."
         android:textSize="18sp" />
 </LinearLayout>

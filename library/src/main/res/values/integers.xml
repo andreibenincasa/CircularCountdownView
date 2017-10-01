@@ -2,4 +2,5 @@
 <resources>
     <integer name="default_progress_edge">0</integer>
     <integer name="default_duration">10000</integer>
+    <integer name="default_initial_elapsed_time">0</integer>
 </resources>
