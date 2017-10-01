@@ -3,7 +3,7 @@
  
 A basic, scalable and customizable circular countdown view for Android.
 
-![Example](img/example.gif)
+![Example](img/example.gif =540x960)
 
 # New Features!
 
