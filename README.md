@@ -47,7 +47,7 @@ Add the CircularCountdonwView to your layout:
         ccv:strokeWidth="12dp" />
 ```
 
-And finally setup the view to your code setting the attributes (the ones not setup in the .xml file):
+And finally setup the view to your code setting the attributes:
 ```java
 public class MainActivity extends AppCompatActivity implements CircularCountdownViewListener {
 
