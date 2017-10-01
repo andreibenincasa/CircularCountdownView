@@ -39,8 +39,8 @@ Add the CircularCountdonwView to your layout:
         android:layout_gravity="center"
         android:layout_weight="1"
         ccv:backgroundColor="@color/colorPrimaryDark"
-        ccv:duration="5000"								// Default duration is 10000 miliseconds
-        ccv:initialElapsedTime="2000"					// You can preview from your .xml file! :D
+        ccv:duration="5000"							// Default duration is 10000 miliseconds
+        ccv:initialElapsedTime="2000"				// You can preview from your .xml file! :D
         ccv:progressColor="@color/colorAccent"
         ccv:progressWidth="12dp"
         ccv:strokeColor="@color/colorPrimary"
