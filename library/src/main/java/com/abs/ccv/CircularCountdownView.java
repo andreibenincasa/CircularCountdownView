@@ -42,8 +42,8 @@ public class CircularCountdownView extends View implements CircularCountdownView
     private long startTime;
     private long currentTime;
     private long duration;
-    private long elapsed;
-    private long initialProgress;
+    private long elapsedTime;
+    private long initialElapsedTime;
 
     public CircularCountdownView(Context context) {
         this(context, null, 0);
@@ -69,6 +69,8 @@ public class CircularCountdownView extends View implements CircularCountdownView
             progressStrokeColor = a.getColor(R.styleable.CircularCountdownView_strokeColor, ContextCompat.getColor(context, R.color.default_stroke_color));
             progressBackgroundColor = a.getColor(R.styleable.CircularCountdownView_backgroundColor, ContextCompat.getColor(context, R.color.default_background_color));
             progressEdgeType = a.getInt(R.styleable.CircularCountdownView_progressEdge, getResources().getInteger(R.integer.default_progress_edge));
+            duration = a.getInt(R.styleable.CircularCountdownView_duration, getResources().getInteger(R.integer.default_duration));
+            initialElapsedTime = a.getInt(R.styleable.CircularCountdownView_initialElapsedTime, getResources().getInteger(R.integer.default_initial_elapsed_time));
         } finally {
             a.recycle();
         }
@@ -83,7 +85,8 @@ public class CircularCountdownView extends View implements CircularCountdownView
 
         startTime = System.currentTimeMillis();
         currentTime = startTime;
-        duration = getResources().getInteger(R.integer.default_duration);
+        elapsedTime = currentTime - startTime + initialElapsedTime;
+        progress = (double) elapsedTime / duration;
 
         if (listener == null) {
             listener = this;
@@ -94,11 +97,11 @@ public class CircularCountdownView extends View implements CircularCountdownView
             @Override
             public void run() {
                 currentTime = System.currentTimeMillis();
-                elapsed = currentTime - startTime + initialProgress;
-                progress = (double) elapsed / duration;
+                elapsedTime = currentTime - startTime + initialElapsedTime;
+                progress = (double) elapsedTime / duration;
                 invalidate();
 
-                if (elapsed >= duration) {
+                if (elapsedTime >= duration) {
                     startTime = System.currentTimeMillis();
                     listener.onCountdownFinished();
                 }
@@ -210,16 +213,16 @@ public class CircularCountdownView extends View implements CircularCountdownView
         this.duration = duration;
     }
 
-    public long getInitialProgress() {
-        return initialProgress;
+    public long getInitialElapsedTime() {
+        return initialElapsedTime;
     }
 
-    public void setInitialProgress(long initialProgress) {
-        this.initialProgress = initialProgress;
+    public void setInitialElapsedTime(long initialElapsedTime) {
+        this.initialElapsedTime = initialElapsedTime;
     }
 
     public long getTimeRemaining() {
-        return duration - elapsed;
+        return duration - elapsedTime;
     }
 
     public CircularCountdownViewListener getListener() {

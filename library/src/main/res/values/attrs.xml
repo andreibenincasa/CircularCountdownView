@@ -10,5 +10,7 @@
             <enum name="round" value="0" />
             <enum name="square" value="1" />
         </attr>
+        <attr name="duration" format="integer" />
+        <attr name="initialElapsedTime" format="integer" />
     </declare-styleable>
 </resources>
