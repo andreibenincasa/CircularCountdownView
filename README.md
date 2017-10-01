@@ -26,7 +26,7 @@ Add this to your app `build.gradle`:
  
 ```gradle
 dependencies {
-	compile 'com.github.andreibenincasa:CircularCountdownView:1.0.1'
+	compile 'com.github.andreibenincasa:CircularCountdownView:1.0.2'
 }
 ```
 
