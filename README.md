@@ -1,10 +1,14 @@
 # CircularCountdownView 
 [![](https://jitpack.io/v/andreibenincasa/CircularCountdownView.svg)](https://jitpack.io/#andreibenincasa/CircularCountdownView) [![API](https://img.shields.io/badge/API-15%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=15)
  
-A basic and customizable circular countdown view for Android.
+A basic, scalable and customizable circular countdown view for Android.
+
+![Example](img/example.gif)
+
 # New Features!
 
-  - A listerner to tell when the progress reached the duration.
+  - Adding duration and elapsed time to be set on layout file.
+  - A listener to tell when the progress reached the duration.
 
 ## Usage
 
