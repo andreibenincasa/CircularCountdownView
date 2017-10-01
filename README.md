@@ -32,21 +32,22 @@ dependencies {
 
 Add the CircularCountdonwView to your layout:
 ```xml
-...
 <com.abs.ccv.CircularCountdownView
         android:id="@+id/ccv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
-        ccv:progressWidth="12dp"
-        ccv:strokeWidth="12dp"
         ccv:backgroundColor="@color/colorPrimaryDark"
+        ccv:duration="5000"								// Default duration is 10000 miliseconds
+        ccv:initialElapsedTime="2000"					// You can preview from your .xml file! :D
         ccv:progressColor="@color/colorAccent"
-        ccv:strokeColor="@color/colorPrimary" />
+        ccv:progressWidth="12dp"
+        ccv:strokeColor="@color/colorPrimary"
+        ccv:strokeWidth="12dp" />
 ```
 
-And finally setup the view to your code setting the attributes:
+And finally setup the view to your code setting the attributes (the ones not setup in the .xml file):
 ```java
 public class MainActivity extends AppCompatActivity implements CircularCountdownViewListener {
 
@@ -58,15 +59,14 @@ public class MainActivity extends AppCompatActivity implements CircularCountdown
         setContentView(R.layout.activity_main);
 
         ccv = (CircularCountdownView) findViewById(R.id.ccv);
-        ccv.setDuration(30 * 1000);
-        ccv.setInitialProgress(15 * 1000);
+        ccv.setDuration(10 * 1000);
+        ccv.setInitialElapsedTime(5 * 1000);
         ccv.setListener(this);
     }
 
     @Override
     public void onCountdownFinished() {
-        Toast.makeText(this, "onCountdownFinished", Toast.LENGTH_LONG).show();
-        ccv.setInitialProgress(0);
+        ccv.setInitialElapsedTime(0);
     }
 }
 ```
@@ -79,7 +79,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
