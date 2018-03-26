@@ -1,3 +1,9 @@
 <resources>
+
     <string name="app_name">CircularCountdownView</string>
+
+    <string name="time_counter_ss_mask">%1$02ds</string>
+    <string name="time_counter_mm_ss_mask">%1$02d:%2$02d</string>
+    <string name="time_counter_mm_ss_SS_mask">%1$02d:%2$02d:%3$02d</string>
+    <string name="time_counter_HH_mm_ss_mask">%1$02d:%2$02d:%3$02d</string>
 </resources>

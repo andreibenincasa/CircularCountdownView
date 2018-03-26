@@ -9,13 +9,20 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.View;
+import android.util.Log;
+import android.util.TypedValue;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.text.DecimalFormat;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Andrei Benincasa on 23/09/2017.
  */
 
-public class CircularCountdownView extends View implements CircularCountdownViewListener {
+public class CircularCountdownView extends RelativeLayout implements CircularCountdownViewListener {
 
     private Paint progressPaint;
     private float progressWidth;
@@ -51,6 +58,29 @@ public class CircularCountdownView extends View implements CircularCountdownView
     private long elapsedTime;
     private long initialElapsedTime;
 
+    // Counter
+
+    private TextView tvCounter;
+    private TimeCounterMask timeCounterMask;
+
+    // TODO: Include others masks
+    private enum TimeCounterMask {
+        ss(R.string.time_counter_ss_mask),
+        mm_ss(R.string.time_counter_mm_ss_mask),
+        mm_ss_SS(R.string.time_counter_mm_ss_SS_mask),
+        HH_mm_ss(R.string.time_counter_HH_mm_ss_mask);
+
+        private int maskResId;
+
+        TimeCounterMask(int maskResId) {
+            this.maskResId = maskResId;
+        }
+
+        public int getMaskResId() {
+            return maskResId;
+        }
+    }
+
     public CircularCountdownView(Context context) {
         this(context, null, 0);
     }
@@ -78,6 +108,8 @@ public class CircularCountdownView extends View implements CircularCountdownView
             progressEdge = ProgressEdge.values()[progressEdgeIndex];
             duration = a.getInt(R.styleable.CircularCountdownView_duration, getResources().getInteger(R.integer.default_duration));
             initialElapsedTime = a.getInt(R.styleable.CircularCountdownView_initialElapsedTime, getResources().getInteger(R.integer.default_initial_elapsed_time));
+            int timeCounterMaskIndex = a.getInt(R.styleable.CircularCountdownView_timeCounterMask, getResources().getInteger(R.integer.default_time_counter_mask));
+            timeCounterMask = TimeCounterMask.values()[timeCounterMaskIndex];
         } finally {
             a.recycle();
         }
@@ -99,6 +131,14 @@ public class CircularCountdownView extends View implements CircularCountdownView
             listener = this;
         }
 
+        tvCounter = new TextView(context);
+        tvCounter.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.default_timer_counter_text_size));
+        LayoutParams tvCounterLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        tvCounterLayoutParams.addRule(CENTER_IN_PARENT, TRUE);
+        tvCounter.setText(getTimeRemainingFormatted());
+        tvCounter.setLayoutParams(tvCounterLayoutParams);
+        addView(tvCounter);
+
         viewHandler = new Handler();
         updateView = new Runnable() {
             @Override
@@ -113,12 +153,44 @@ public class CircularCountdownView extends View implements CircularCountdownView
                     listener.onCountdownFinished();
                 }
 
-                viewHandler.postDelayed(updateView, 1000 / 60);
+                tvCounter.setText(getTimeRemainingFormatted());
+
                 viewHandler.postDelayed(updateView, FRAME_RATE);
             }
         };
 
         viewHandler.post(updateView);
+    }
+
+    private String getTimeRemainingFormatted() {
+        switch (timeCounterMask) {
+            case ss:
+                return getContext().getString(timeCounterMask.getMaskResId(), getSeconds());
+            case mm_ss:
+                return getContext().getString(timeCounterMask.getMaskResId(), getMinutes(), getSeconds());
+            case mm_ss_SS:
+                return getContext().getString(timeCounterMask.getMaskResId(), getMinutes(), getSeconds(), getMilliseconds() / 10);
+            case HH_mm_ss:
+                return getContext().getString(timeCounterMask.getMaskResId(), getHours(), getMinutes(), getSeconds());
+            default:
+                return getContext().getString(timeCounterMask.getMaskResId(), getMinutes(), getSeconds());
+        }
+    }
+
+    private long getHours() {
+        return TimeUnit.MILLISECONDS.toHours(getTimeRemaining()) - TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(getTimeRemaining()));
+    }
+
+    private long getMinutes() {
+        return TimeUnit.MILLISECONDS.toMinutes(getTimeRemaining()) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(getTimeRemaining()));
+    }
+
+    private long getSeconds() {
+        return TimeUnit.MILLISECONDS.toSeconds(getTimeRemaining()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(getTimeRemaining()));
+    }
+
+    private long getMilliseconds() {
+        return getTimeRemaining() - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(getTimeRemaining()));
     }
 
     Paint initPaint() {
@@ -169,6 +241,35 @@ public class CircularCountdownView extends View implements CircularCountdownView
     }
 
     @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+
+        float centerWidth = getWidth() / 2;
+        float centerHeight = getHeight() / 2;
+
+        // set bound of our circle in the middle of the view
+        circleBounds.set(
+                centerWidth - radius,
+                centerHeight - radius,
+                centerWidth + radius,
+                centerHeight + radius
+        );
+
+        setupPaintAttributes(progressPaint, progressWidth, progressColor);
+        setupPaintAttributes(progressStroke, progressStrokeWidth, progressStrokeColor);
+        setupPaintAttributes(progressBackground, progressWidth, progressBackgroundColor);
+
+        // Draw progressPaint stroke
+        canvas.drawCircle(centerWidth, centerHeight, radius, progressStroke);
+
+        // Draw progressPaint background
+        canvas.drawCircle(centerWidth, centerHeight, radius, progressBackground);
+
+        // Draw progressPaint from top (-90º)
+        canvas.drawArc(circleBounds, -90, (float) (progress * 360), false, progressPaint);
+    }
+
+    /*@Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
@@ -195,7 +296,7 @@ public class CircularCountdownView extends View implements CircularCountdownView
 
         // Draw progressPaint from top (-90º)
         canvas.drawArc(circleBounds, -90, (float) (progress * 360), false, progressPaint);
-    }
+    }*/
 
     // TODO: Check difference when all edges are equal
     void setupPaintAttributes(Paint paint, float width, int color) {

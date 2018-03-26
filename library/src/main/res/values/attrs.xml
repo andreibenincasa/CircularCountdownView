@@ -12,5 +12,13 @@
         </attr>
         <attr name="duration" format="integer" />
         <attr name="initialElapsedTime" format="integer" />
+
+        <!-- TODO: Add others masks here -->
+        <attr name="timeCounterMask" format="enum">
+            <enum name="ss" value="0" />
+            <enum name="mm_ss" value="1" />
+            <enum name="mm_ss_SS" value="2" />
+            <enum name="HH_mm_ss" value="3" />
+        </attr>
     </declare-styleable>
 </resources>

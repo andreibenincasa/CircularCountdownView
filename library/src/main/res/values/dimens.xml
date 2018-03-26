@@ -5,4 +5,6 @@
     <dimen name="default_progress_radius">128dp</dimen>
     <dimen name="default_progress_min_width">128dp</dimen>
     <dimen name="default_progress_min_height">128dp</dimen>
+
+    <dimen name="default_timer_counter_text_size">32sp</dimen>
 </resources>

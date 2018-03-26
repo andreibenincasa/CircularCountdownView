@@ -3,4 +3,6 @@
     <integer name="default_progress_edge">0</integer>           <!-- Round -->
     <integer name="default_duration">10000</integer>            <!-- 10 seconds -->
     <integer name="default_initial_elapsed_time">0</integer>    <!-- 0 seconds -->
+
+    <integer name="default_time_counter_mask">1</integer>       <!-- mm:ss -->
 </resources>
