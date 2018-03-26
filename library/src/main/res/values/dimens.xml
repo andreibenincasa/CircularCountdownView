@@ -2,7 +2,7 @@
 <resources>
     <dimen name="default_progress_width">8dp</dimen>
     <dimen name="default_progress_stroke_width">8dp</dimen>
-    <dimen name="default_radius">128dp</dimen>
-    <dimen name="min_width">128dp</dimen>
-    <dimen name="min_height">128dp</dimen>
+    <dimen name="default_progress_radius">128dp</dimen>
+    <dimen name="default_progress_min_width">128dp</dimen>
+    <dimen name="default_progress_min_height">128dp</dimen>
 </resources>

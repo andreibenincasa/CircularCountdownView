@@ -20,6 +20,12 @@ public class CircularCountdownView extends View implements CircularCountdownView
     private Paint progressPaint;
     private float progressWidth;
     private int progressColor;
+    private ProgressEdge progressEdge;
+
+    private enum ProgressEdge {
+        ROUND,
+        SQUARE
+    }
 
     private Paint progressStroke;
     private float progressStrokeWidth;
@@ -27,7 +33,6 @@ public class CircularCountdownView extends View implements CircularCountdownView
 
     private Paint progressBackground;
     private int progressBackgroundColor;
-    private int progressEdgeType;
 
     int minWidth;
     int minHeight;
@@ -39,6 +44,7 @@ public class CircularCountdownView extends View implements CircularCountdownView
 
     private Handler viewHandler;
     private Runnable updateView;
+    private final int FRAME_RATE = 1000 / 60; // 60 frames per second
     private long startTime;
     private long currentTime;
     private long duration;
@@ -68,7 +74,8 @@ public class CircularCountdownView extends View implements CircularCountdownView
             progressStrokeWidth += progressWidth;
             progressStrokeColor = a.getColor(R.styleable.CircularCountdownView_strokeColor, ContextCompat.getColor(context, R.color.default_stroke_color));
             progressBackgroundColor = a.getColor(R.styleable.CircularCountdownView_backgroundColor, ContextCompat.getColor(context, R.color.default_background_color));
-            progressEdgeType = a.getInt(R.styleable.CircularCountdownView_progressEdge, getResources().getInteger(R.integer.default_progress_edge));
+            int progressEdgeIndex = a.getInt(R.styleable.CircularCountdownView_progressEdge, getResources().getInteger(R.integer.default_progress_edge));
+            progressEdge = ProgressEdge.values()[progressEdgeIndex];
             duration = a.getInt(R.styleable.CircularCountdownView_duration, getResources().getInteger(R.integer.default_duration));
             initialElapsedTime = a.getInt(R.styleable.CircularCountdownView_initialElapsedTime, getResources().getInteger(R.integer.default_initial_elapsed_time));
         } finally {
@@ -79,8 +86,8 @@ public class CircularCountdownView extends View implements CircularCountdownView
         progressStroke = initPaint();
         progressPaint = initPaint();
 
-        minWidth = getResources().getDimensionPixelSize(R.dimen.min_width);
-        minHeight = getResources().getDimensionPixelSize(R.dimen.min_height);
+        minWidth = getResources().getDimensionPixelSize(R.dimen.default_progress_min_width);
+        minHeight = getResources().getDimensionPixelSize(R.dimen.default_progress_min_height);
         circleBounds = new RectF();
 
         startTime = System.currentTimeMillis();
@@ -107,8 +114,10 @@ public class CircularCountdownView extends View implements CircularCountdownView
                 }
 
                 viewHandler.postDelayed(updateView, 1000 / 60);
+                viewHandler.postDelayed(updateView, FRAME_RATE);
             }
         };
+
         viewHandler.post(updateView);
     }
 
@@ -191,11 +200,11 @@ public class CircularCountdownView extends View implements CircularCountdownView
     // TODO: Check difference when all edges are equal
     void setupPaintAttributes(Paint paint, float width, int color) {
         paint.setStrokeWidth(width);
-        switch (progressEdgeType) {
-            case 0:
+        switch (progressEdge) {
+            case ROUND:
                 paint.setStrokeCap(Paint.Cap.ROUND);
                 break;
-            case 1:
+            case SQUARE:
                 paint.setStrokeCap(Paint.Cap.SQUARE);
                 break;
             default:
